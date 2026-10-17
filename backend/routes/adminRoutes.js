@@ -1,0 +1,113 @@
+const express = require("express");
+const router = express.Router();
+
+const {
+  getDashboardStats,
+} = require(
+  "../controllers/admin/adminAnalyticsController"
+);
+
+const {
+  getAdminProfile,
+} = require("../controllers/admin/adminProfileController");
+
+
+const {
+  loginAdmin,
+} = require("../controllers/admin/adminAuthController");
+
+const {
+  getPendingDoctors,
+  approveDoctor,
+  rejectDoctor,
+  getPendingPharmacies,
+  approvePharmacy,
+  rejectPharmacy,
+} = require("../controllers/admin/adminManagementController");
+
+const {
+  protect,
+  adminOnly,
+} = require("../middleware/authMiddleware");
+
+const {
+  getAllAppointments,
+} = require(
+  "../controllers/admin/adminAppointmentController"
+);
+
+const {
+  getAdminSettings,
+} = require(
+  "../controllers/admin/adminSettingsController"
+);
+
+router.post("/login", loginAdmin);
+
+router.get(
+  "/pending-doctors",
+  protect,
+  adminOnly,
+  getPendingDoctors
+);
+
+router.get(
+  "/appointments",
+  protect,
+  adminOnly,
+  getAllAppointments
+);
+
+router.get(
+  "/settings",
+  protect,
+  adminOnly,
+  getAdminSettings
+);
+
+router.put(
+  "/approve-doctor/:id",
+  protect,
+  adminOnly,
+  approveDoctor
+);
+
+router.put(
+  "/reject-doctor/:id",
+  protect,
+  adminOnly,
+  rejectDoctor
+);
+
+router.get(
+  "/pending-pharmacies",
+  protect,
+  adminOnly,
+  getPendingPharmacies
+);
+
+router.put(
+  "/approve-pharmacy/:id",
+  protect,
+  adminOnly,
+  approvePharmacy
+);
+
+router.put(
+  "/reject-pharmacy/:id",
+  protect,
+  adminOnly,
+  rejectPharmacy
+);
+
+router.get(
+  "/dashboard-stats",
+  protect,
+  adminOnly,
+  getDashboardStats
+);
+
+
+router.get("/profile", protect, adminOnly, getAdminProfile);
+
+module.exports = router;
